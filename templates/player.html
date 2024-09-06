@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../static/styles/player.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Player</title>
+</head>
+<body>
+<div id="main-container">
+        <div id="video-container">
+            <div class="dark-background"></div>
+            <div class="light-background">
+                <video width="640" height="360" controls autoplay="autoplay">
+                    <source src="{{ url_for('static', filename='results/' + filename + '.mp4') }}" type="video/mp4">
+                </video>
+                <button id="download-video" onclick="downloadVideo()">Скачать видео</button>
+                <div id="list">
+                    <p>
+                        <iframe src="{{ url_for('static', filename='results/' + filename + '_log.txt') }}" frameborder="0"
+                            height="450" width="95%"></iframe>
+                    </p>
+                    <div id="download-buttons">
+                        <button id="download-log" onclick="downloadLog()">Скачать log файл</button>
+                        <button id="download-extended-log" onclick="downloadExtendedLog()">Скачать расширенный log</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="insight-text">Insight</div>
+        <a href="{{ url_for('index') }}" class="back-to-home">На главную страницу</a>
+        <a href="{{ url_for('archive') }}" class="archive-button">Перейти в архив</a>
+</div>
+<script>
+        function downloadVideo() {
+            var videoUrl = "{{ url_for('static', filename='results/' + filename + '.mp4') }}";
+
+            var fileName = videoUrl.substring(videoUrl.lastIndexOf('/') + 1);
+
+            var link = document.createElement('a');
+            link.href = videoUrl;
+            link.download = fileName;
+
+            document.body.appendChild(link);
+            link.click();
+
+            document.body.removeChild(link);
+        }
+
+        function downloadLog() {
+            var logUrl = "{{ url_for('static', filename='results/' + filename + '_log.txt') }}";
+            var fileName = logUrl.substring(logUrl.lastIndexOf('/') + 1);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', logUrl, true);
+            xhr.responseType = 'blob';
+
+            xhr.onload = function() {
+                var blob = new Blob([xhr.response], { type: 'application/octet-stream' });
+
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = fileName;
+
+                document.body.appendChild(link);
+                link.click();
+
+                document.body.removeChild(link);
+            };
+
+            xhr.send();
+        }
+
+        function downloadExtendedLog() {
+            var extendedLogUrl = "{{ url_for('static', filename='results/' + filename + '_log_full.txt') }}";
+            var fileName = extendedLogUrl.substring(extendedLogUrl.lastIndexOf('/') + 1);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', extendedLogUrl, true);
+            xhr.responseType = 'blob';
+
+            xhr.onload = function() {
+                var blob = new Blob([xhr.response], { type: 'application/octet-stream' });
+
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = fileName;
+
+                document.body.appendChild(link);
+                link.click();
+
+                document.body.removeChild(link);
+            };
+
+            xhr.send();
+        }
+    </script>
+</body>
+</html>

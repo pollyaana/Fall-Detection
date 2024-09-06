@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../static/styles/index.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insight</title>
+</head>
+<body>
+        <div id="video-container">
+            <div class="dark-background"></div>
+            <div class="light-background"></div>
+        </div>
+            <div id="main-container">
+                <div class ="cent">
+                    {% with messages = get_flashed_messages() %}
+                   {% if messages %}
+                      {% for message in messages %}
+                <div id="flash-message" class="flash">
+                <p>{{ message }}</p>
+<button class="close-button"  onclick="closeFlashMessage()">
+                        <img src="../static/button.png" alt="Крестик" class="close-icon">
+                    </button>
+                </div>
+                      {% endfor %}
+                   {% endif %}
+                {% endwith %}
+                    </div>
+        <form id="upload-form" action="/upload" method="POST" enctype="multipart/form-data">
+            <label for="file-input" id="upload-button" class="light-background-button button-container">
+                <div class="button-text">Загрузить видео</div>
+		<div id="loading-spinner"></div>
+                <input type="file" id="file-input" name="file" style="display: none;">
+                <input type = "submit" style="display: none;">
+            </label>
+        </form>
+        <a href="/archive" id="archive-button" class="light-background-button button-container">
+            <div class="button-text">Архив видео</div>
+        </a>
+        <div id="insight-text">Insight</div>
+        <div id="description">Загрузите видео для определения положения человека и обнаружения опасных ситуаций. Получите результат: видео с отмеченными положениями и предупреждениями.</div>
+        <div id="border"> <img id="example-gif2" src="{{ url_for('static', filename='video_1.gif')}}" style="width: 100%; height: 100%;"></div>
+        <div id="example-gif"></div>
+    </div>
+</body>
+<script>
+    var input = document.querySelector("input[type='file']");
+    var uploadButton = document.getElementById('upload-button');
+    var archiveButton = document.getElementById('archive-button');
+    var buttonText = document.querySelector('#upload-button .button-text');
+    var loadingSpinner = document.getElementById('loading-spinner');
+
+    input.onchange = function () {
+        uploadButton.disabled = true;
+	archiveButton.disabled = true;
+        loadingSpinner.style.display = 'block';
+        buttonText.style.color = '#D9D9D9';
+        uploadButton.style.backgroundColor = '#1C1C1C';
+        buttonText.innerText = 'Обработка...';
+
+        this.form.submit();
+    }
+      function closeFlashMessage() {
+            var flashMessage = document.getElementById('flash-message');
+            flashMessage.style.display = 'none';
+        }
+</script>
+</html>

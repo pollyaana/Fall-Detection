@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../static/styles/archieve.css">
+    <meta charset="UTF-8">
+    <title>Insight Archive</title>
+</head>
+<body>
+<div id="main-container">
+    <div id="video-container">
+        <div class="dark-background"></div>
+        <div class="light-background">
+            <div id="video-list">
+  <ul>
+    <li><a href="{{ url_for('static', filename='results/video_1.mp4')}}">Video 1</a></li>
+    <li><a href="video2.mp4">Video 2</a></li>
+    <li><a href="video3.mp4">Video 3</a></li>
+  </ul>
+</div>
+        </div>
+    </div>
+    <div id="insight-text">Insight</div>
+    <a href="{{ url_for('index') }}" class="back-to-home">На главную страницу</a>
+</div>
+</body>
+</html>
